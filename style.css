@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  text-align: center;
+  background-image: url(./engin-akyurt-HEMIBJ8QQuA-unsplash.jpg);
+  background-attachment: fixed;
+  
+}
+
+span {
+  font-size: 3rem;
+}
+
+img {
+  width: 20%;
+}
+
