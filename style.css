@@ -6,9 +6,18 @@
 
 body {
   text-align: center;
-  background-image: url(./engin-akyurt-HEMIBJ8QQuA-unsplash.jpg);
+  /* background-image: url(./engin-akyurt-HEMIBJ8QQuA-unsplash.jpg); */
   background-attachment: fixed;
+  background-color: rgb(17, 78, 17);
   
+}
+
+h1 {
+  margin: 20px;
+}
+
+h2 {
+  margin: 10px;
 }
 
 span {
@@ -16,6 +25,70 @@ span {
 }
 
 img {
-  width: 20%;
+  width: 25%;
 }
 
+span {
+  display: inline-block;
+  width: 60px;
+  line-height: 60px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 2rem;
+  border: 2px solid black;
+  margin: 10px;
+  background-color: #adb5bd;
+}
+
+.result {
+  font-size: 2rem;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+/* Buttons */
+.btn {
+  min-width: 110px;
+  height: 40px;
+  color: black;
+  padding: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  outline: none;
+  border-radius: 20px;
+  border: none;
+  margin: 0 10px;
+}
+
+/* Hit button */
+.css-button-fully-rounded--green {
+  background: #57cc99;
+}
+.css-button-fully-rounded--green:hover,
+.css-button-fully-rounded--green:hover {
+  background: #3c926c;
+}
+
+/* Stand button */
+.css-button-fully-rounded--red {
+  background: #da3e58;
+}
+.css-button-fully-rounded--red:hover,
+.css-button-fully-rounded--red:active {
+  background: #d90429;
+}
+
+/* Deal button */
+.css-button-fully-rounded--sand {
+  background: #adb5bd;
+}
+.css-button-fully-rounded--sand:hover,
+.css-button-fully-rounded--sand:hover {
+  background: #6a6a6b;
+}

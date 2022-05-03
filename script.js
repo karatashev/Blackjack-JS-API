@@ -7,7 +7,7 @@ let playerCardOne,
   sumPlayerCards,
   sumDealersCards;
 
-//first card of the dealer
+//first card for the dealer
 let dealerCardOne = document.querySelector(".dealer-card1");
 
 let result = document.querySelector(".result");
@@ -24,7 +24,7 @@ const standButton = document.querySelector(".stand");
 let addPlayerCards = [];
 let addDealersCards = [];
 
-fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6") //6 decks for blackjack
+fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=2") //6 decks for blackjack
   .then((res) => res.json()) //parse response as JSON
   .then((data) => {
     console.log(data);
@@ -44,6 +44,13 @@ function dealCards() {
     .then((data) => {
       console.log(data);
       console.log(data.remaining);
+
+      dealButton.classList.toggle("hide");
+      hitButton.classList.toggle("hide");
+      standButton.classList.toggle("hide");
+      dealerScore.classList.toggle("hide");
+      playerScore.classList.toggle("hide");
+
       //images for the Cards
       document.querySelector(".player-card1").src = data.cards[0].image;
       // Dealer first card is hidden from the start!
@@ -83,9 +90,35 @@ function dealCards() {
 
       //Check is player has drawn blackjack from the start
       if (sumPlayerCards === 21) {
-        result.innerText = "BLACKJACK PLAYER WINS";
+        result.classList.toggle("hide");
+        result.innerText = "BLACKJACK! PLAYER WINS";
+
+        fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`) //for closed card
+          .then((res) => res.json()) //parse response as JSON
+          .then((data) => {
+            console.log(data);
+            deckId = data.deck_id;
+            dealerCardOne.src = data.cards[0].image;
+            dealerCardOne = convertToNum(data.cards[0].value);
+            addDealersCards.push(dealerCardOne);
+            console.log(addDealersCards);
+
+            sumDealersCards = addDealersCards.reduce((prevCard, curCard) => {
+              return prevCard + curCard;
+            }, 0);
+            console.log(sumDealersCards);
+
+            dealerScore.innerText = sumDealersCards;
+          })
+          .catch((err) => {
+            console.log(`error ${err}`);
+          });
+      } else if (sumPlayerCards > 21) {
+        result.classList.toggle("hide");
+        result.innerText = "BUST! DEALER WINS";
       }
     })
+
     .catch((err) => {
       console.log(`error ${err}`);
     });
@@ -139,6 +172,7 @@ function hitAction() {
                 return prevCard + curCard;
               }, 0);
 
+              // result.classList.toggle('hide');
               dealerScore.innerText = sumDealersCards;
 
               checkForWinner();
@@ -172,12 +206,15 @@ function standAction() {
         return prevCard + curCard;
       }, 0);
       console.log(sumDealersCards);
+
       dealerScore.innerText = sumDealersCards;
 
       if (sumDealersCards >= 17 && sumDealersCards < 21) {
-        result.innerText = "DEALER WINS";
-      }
-      else if (sumDealersCards < 17) {
+        checkForWinner();
+      } else if (sumDealersCards === 21) {
+        result.classList.toggle("hide");
+        result.innerText = "BLACKJACK! DEALER WINS";
+      } else if (sumDealersCards < 17) {
         fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
           .then((res) => res.json()) //parse response as JSON
           .then((data) => {
@@ -206,7 +243,9 @@ function standAction() {
             console.log(`error ${err}`);
           });
       }
+      //if dealer is more than 21 with two aces
       else {
+        result.classList.toggle("hide");
         result.innerText = "PLAYER WINS";
       }
     })
@@ -229,18 +268,28 @@ function convertToNum(val) {
 //Checks who won
 function checkForWinner() {
   if (sumPlayerCards > sumDealersCards && sumPlayerCards < 21) {
+    result.classList.toggle("hide");
     result.innerText = "PLAYER WINS";
   } else if (sumDealersCards > 21 && sumPlayerCards <= 20) {
+    result.classList.toggle("hide");
     result.innerText = "PLAYER WINS";
-  } else if (sumPlayerCards === 21 && sumDealersCards < 21) {
+  } else if (sumPlayerCards === 21 && sumDealersCards <= 20) {
+    result.classList.toggle("hide");
     result.innerText = "BLACKJACK PLAYER WINS";
   } else if (sumDealersCards > sumPlayerCards && sumDealersCards < 21) {
+    result.classList.toggle("hide");
     result.innerText = "DEALER WINS";
   } else if (sumPlayerCards > 21 && sumDealersCards <= 20) {
-    result.innerText = "DEALER WINS";
-  } else if (sumDealersCards === 21 && sumPlayerCards <= 20) {
+    result.classList.toggle("hide");
+    result.innerText = "BUST! DEALER WINS";
+  } else if (
+    (sumDealersCards === 21 && sumPlayerCards <= 20) ||
+    sumPlayerCards > 21
+  ) {
+    result.classList.toggle("hide");
     result.innerText = "BLACKJACK DEALER WINS";
   } else {
+    result.classList.toggle("hide");
     result.innerText = "DRAW";
   }
 }
