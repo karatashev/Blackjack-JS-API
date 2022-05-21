@@ -24,7 +24,7 @@ const standButton = document.querySelector(".stand");
 let addPlayerCards = [];
 let addDealersCards = [];
 
-fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=2") //6 decks for blackjack
+fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=2") //2 decks for blackjack
   .then((res) => res.json()) //parse response as JSON
   .then((data) => {
     console.log(data);
