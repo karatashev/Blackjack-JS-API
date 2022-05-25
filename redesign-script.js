@@ -1,11 +1,7 @@
 //DOM
 let deckId = ""; //we store our deck in global variable
-let playerCardOne,
-  playerCardTwo,
-  dealerClosedCard,
-  dealerCardTwo,
-  sumPlayersCards,
-  sumDealersCards;
+let sumPlayersCards;
+let sumDealersCards;
 
 //first card for the dealer
 let dealerCardOne = document.querySelector(".dealer-card1");
@@ -60,7 +56,6 @@ async function dealCards() {
   playerScore.classList.toggle("hide");
 
   console.log(addPlayersCards)
-
   console.log(addDealersCards)
 
   renderCards();
@@ -76,6 +71,7 @@ async function hit() {
   addPlayersCards.push(await getCard());
   sumCards();
   renderPlayersCard();
+  console.log(addPlayersCards)
 
   //If player goes over 21 to finish the game and open the dealers cards
   if (sumPlayersCards >= 21) {
@@ -84,10 +80,10 @@ async function hit() {
   }
 }
 
-
 async function stand() {
   flipDealersFirstCard();
 
+  //To hit the Dealer till he's over 17 or over
   while (sumDealersCards < 17) {
     addDealersCards.push(await getCard());
     sumCards();
@@ -112,22 +108,63 @@ async function getCard() {
 };
 
 function sumCards() {
-  sumPlayersCards = 0;
-  addPlayersCards.forEach(element => {
-  sumPlayersCards += convertToNum(element.value);
-  console.log(element.value)
-});
-  sumDealersCards = 0;
-  addDealersCards.forEach(element => {
-    sumDealersCards += convertToNum(element.value);
-    console.log(element.value)
-  })
+//   sumPlayersCards = 0;
+//   addPlayersCards.forEach(element => {
+//   sumPlayersCards += convertToNum(element.value);
+//   console.log(element.value)
+// });
+
+// console.log(sumPlayersCards)
+
+  sumPlayersCards = addPlayersCards
+  .map(card => card.value)
+  .sort()
+  .reduce((sum, current) => {
+    const currVal = convertToNum(current);
+    const preSum = sum + currVal;
+    console.log(preSum)
+    if (currVal === 11 && preSum > 21) {
+      return preSum - 10;
+    }
+    console.log(preSum)
+
+
+    return preSum;
+  }, 0);
+
+  console.log(addPlayersCards)
+
+
+  sumDealersCards = addDealersCards
+  .map(card => card.value)
+  .sort()
+  .reduce((sum, current) => {
+    const currVal = convertToNum(current);
+    const preSum = sum + currVal;
+    console.log(preSum);
+
+    if (currVal === 11 && preSum > 21) {
+      return preSum - 10;
+    }
+
+    console.log(preSum)
+    return preSum;
+    
+  }, 0);
+  console.log(addDealersCards)
+
+  // sumDealersCards = 0;
+  // addDealersCards.forEach(element => {
+  //   sumDealersCards += convertToNum(element.value);
+  //   console.log(element.value)
+  // })
+
   dealerScore.textContent = convertToNum(addDealersCards[addDealersCards.length - 1].value);
   playerScore.textContent = sumPlayersCards;
 
+
   console.log(sumDealersCards)
   console.log(sumPlayersCards)
-
 }
 
 //Draw the cards in the arrays
@@ -153,7 +190,6 @@ function renderPlayersCard() {
   // playerScore.textContent = sumCards();
 }
 
-
 function renderDealersCard() {
   let cardElement = document.createElement("img");
   dealerCards.appendChild(cardElement);
@@ -165,7 +201,6 @@ function renderDealersCard() {
 function flipDealersFirstCard() {
   dealerCards.firstElementChild.src = addDealersCards[0].image;
   dealerScore.textContent = sumDealersCards;
-  console.log(sumDealersCards);
 }
 
 //To convert the cards with string Values
@@ -209,3 +244,4 @@ function checkForWinner() {
     result.innerText = "DRAW";
   }
 }
+
