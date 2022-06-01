@@ -108,13 +108,6 @@ async function getCard() {
 };
 
 function sumCards() {
-//   sumPlayersCards = 0;
-//   addPlayersCards.forEach(element => {
-//   sumPlayersCards += convertToNum(element.value);
-//   console.log(element.value)
-// });
-
-// console.log(sumPlayersCards)
 
   sumPlayersCards = addPlayersCards
   .map(card => card.value)
@@ -153,12 +146,6 @@ function sumCards() {
   }, 0);
   console.log(addDealersCards)
 
-  // sumDealersCards = 0;
-  // addDealersCards.forEach(element => {
-  //   sumDealersCards += convertToNum(element.value);
-  //   console.log(element.value)
-  // })
-
   dealerScore.textContent = convertToNum(addDealersCards[addDealersCards.length - 1].value);
   playerScore.textContent = sumPlayersCards;
 
@@ -167,7 +154,7 @@ function sumCards() {
   console.log(sumPlayersCards)
 }
 
-//Draw the cards in the arrays
+//Render the cards from the arrays
 function renderCards() {
   addDealersCards.forEach(element => {
     let cardElement = document.createElement("img");
@@ -244,4 +231,3 @@ function checkForWinner() {
     result.innerText = "DRAW";
   }
 }
-

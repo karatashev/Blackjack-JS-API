@@ -25,7 +25,9 @@ span {
 }
 
 img {
-  width: 25%;
+  width: 120px;
+  height: 170px;
+
   margin-right: 5px;
 }
 
@@ -69,11 +71,12 @@ span {
 
 /* Hit button */
 .css-button-fully-rounded--green {
-  background: #57cc99;
+  background: #3c926c;
+  
 }
 .css-button-fully-rounded--green:hover,
 .css-button-fully-rounded--green:hover {
-  background: #3c926c;
+  background: #57cc99;
 }
 
 /* Stand button */
